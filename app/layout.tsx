@@ -7,9 +7,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <section>
-      <Header />
-      {children}
-    </section>
+    <html>
+      <head>
+        <title>
+          NextJS 13 Sandbox
+        </title>
+      </head>
+      <body>
+        <Header />
+        {children}
+      </body>
+    </html>
   );
 }
