@@ -2,13 +2,15 @@
 
 ## Setup NextJS 13 project with Tailwind CSS:
 
-npx create-next-app -e with-tailwindcss nextjs-13-sandbox  
-cd nextjs-13-sandbox  
-git init  
+```
+npx create-next-app -e with-tailwindcss nextjs-13-sandbox
+cd nextjs-13-sandbox
+git init
 git remote add origin https://github.com/valyndsilva/nextjs-13-sandbox.git
-git branch -M main  
+git branch -M main
 git push -u origin main
 npm run dev
+```
 
 ## [NextJS 13 folder structure setup:](https://beta.nextjs.org/docs/upgrade-guide)
 
@@ -793,7 +795,6 @@ Now when you search a term you will get the results but with a delay as it is bl
 <b>Note: </b>
 In NextJS 13 we have the loading.tsx and error.tsx file conventions.
 
-
 ### Implementing the "new" Loading State Functionality:
 
 The special file loading.js enables showing an instant loading state from the server while the content of a route segment loads. Once all data fetching in the route segment has finished, the loading UI will be swapped for the page.
@@ -946,18 +947,20 @@ export default Dashboard;
 
 Now if we have more additional routes and say we want "search" and "todos" routes only for users and "developer" and "dashboard" routes only for admins but we wanted to separate it in our folder structure. This would break the routing system. In NextJS we can use Route Groups to help with this issue using () around the folder name.
 
-So let's create a (users) and (admin) folder in app directory and move the "search" and "todos" routes in (users) and "developer"  and "dashboard" routes in (admin) and update the imports automatically.
+So let's create a (users) and (admin) folder in app directory and move the "search" and "todos" routes in (users) and "developer" and "dashboard" routes in (admin) and update the imports automatically.
 
 Now "npm run dev" and you will see the none of the routes are affected.
 
 If you use Route Groups and want to have different layouts across the (users) and (admin) folders you have to delete the app/layout.tsx and create a new layout.tsx in each folder. But you can only have 1 main page.tsx in the app directory. YOu cannot add separate page.ysx in the route groups.
 
 ### Implementing React Suspense Boundary and Streaming:
+
 With Next.js, your UI can be resilient to inconsistent network speeds. Fast requests can be streamed to the client as soon as they are ready. Slow, or inconsistent requests, can be wrapped in a Suspense boundary to show a fallback component until they've completed rendering on the server.
 
 Just like we have server components that get blocked by the await calls we show a loading.tsx state. Similarly using a Suspense we can use a fallback component to do the same.
 
 In app/page.tsx:
+
 ```
 import React, { Suspense } from "react";
 import TodosList from "./(users)/todos/TodosList";
@@ -993,6 +996,7 @@ export default page;
 ```
 
 Update the TodoList.tsx to have a random timeout:
+
 ```
 import Link from "next/link";
 import React from "react";
@@ -1002,7 +1006,7 @@ const fetchTodos = async () => {
   // Timeout for random number of seconds between 1 and 5
   const timeout = Math.floor(Math.random() * 5 + 1) * 1000;
   await new Promise((resolve) => setTimeout(resolve, timeout));
-  
+
   const res = await fetch("https://jsonplaceholder.typicode.com/todos/");
   const todos: Todo[] = await res.json();
   console.log(todos); // This will only be visible in the terminal as it is server side. It won't be visible in the browser console.
@@ -1026,9 +1030,10 @@ async function TodosList() {
 export default TodosList;
 
 ```
+
 You can stream UI in Next.js using loading.js (for an entire route segment) or with Suspense boundaries (for more granular loading UI).
 
 Streaming allows you to incrementally send UI from the server to client, progressively rendering components and pages. This enables displaying content faster, without waiting for all data fetching to complete before the UI is rendered.
 
-Streaming is particularly beneficial when there's a slow network request for retrieving data. Rather than the entire page being blocked from rendering due to a slow API or database lookup... 
+Streaming is particularly beneficial when there's a slow network request for retrieving data. Rather than the entire page being blocked from rendering due to a slow API or database lookup...
 UI can be incrementally sent to the client. Users don't have to wait for the entire page to load before they can start interacting with it.
